@@ -50,7 +50,7 @@ jobs:
 #        with:
 #          args: git submodule update --init --recursive
       
-      # checkout all the submodules
+      # Checkout PR branch and all history (not just last commit)
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.head_ref }}
@@ -60,6 +60,7 @@ jobs:
       - name: Git Log
         run: git log
         
+      # Checkout submodules, without --depth=1  
       - name: Checkout submodules
         shell: bash
         run: |
@@ -90,12 +91,8 @@ jobs:
       - name: Git Diff
         run: |
           git diff --submodule=log --diff-filter=AM ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+          echo ::set-env name=SUBMODULE_NAME::$(git diff --submodule=log --diff-filter=AM ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | awk '{for (I=1;I<=NF;I++) if ($I == "Submodule") {print $(I+1)};}')
           
-      # Dump all contexts again
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
       - name: Dump job context
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
@@ -104,18 +101,36 @@ jobs:
         env:
           STEPS_CONTEXT: ${{ toJson(steps) }}
         run: echo "$STEPS_CONTEXT"
-      - name: Dump runner context
-        env:
-          RUNNER_CONTEXT: ${{ toJson(runner) }}
-        run: echo "$RUNNER_CONTEXT"
-      - name: Dump strategy context
-        env:
-          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
-        run: echo "$STRATEGY_CONTEXT"
-      - name: Dump matrix context
-        env:
-          MATRIX_CONTEXT: ${{ toJson(matrix) }}
-        run: echo "$MATRIX_CONTEXT"
+        
+      - name: Check SUBMODULE_NAME
+        run: echo ${{ env.SUBMODULE_NAME }}
+#       # Dump all contexts again
+#       - name: Dump GitHub context
+#         env:
+#           GITHUB_CONTEXT: ${{ toJson(github) }}
+#         run: echo "$GITHUB_CONTEXT"
+#       - name: Dump job context
+#         env:
+#           JOB_CONTEXT: ${{ toJson(job) }}
+#         run: echo "$JOB_CONTEXT"
+#       - name: Dump steps context
+#         env:
+#           STEPS_CONTEXT: ${{ toJson(steps) }}
+#         run: echo "$STEPS_CONTEXT"
+#       - name: Dump runner context
+#         env:
+#           RUNNER_CONTEXT: ${{ toJson(runner) }}
+#         run: echo "$RUNNER_CONTEXT"
+#       - name: Dump strategy context
+#         env:
+#           STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+#         run: echo "$STRATEGY_CONTEXT"
+#       - name: Dump matrix context
+#         env:
+#           MATRIX_CONTEXT: ${{ toJson(matrix) }}
+#         run: echo "$MATRIX_CONTEXT"
+    
+      
 
       - name: files-present-action
         uses: JJ/files-present-action@releases/v1
