@@ -130,7 +130,10 @@ jobs:
 #           MATRIX_CONTEXT: ${{ toJson(matrix) }}
 #         run: echo "$MATRIX_CONTEXT"
     
-      
+      - name: cd
+        run: |
+          cd ${{ env.SUBMODULE_NAME }}
+          ls -la
 
       - name: files-present-action
         uses: JJ/files-present-action@releases/v1
