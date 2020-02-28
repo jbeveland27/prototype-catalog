@@ -1,0 +1,27 @@
+name: Pull Request
+
+on: 
+  pull_request:
+    branches: 
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+    - name: Install Dependencies
+      run: npm install
+    - name: Install NR1 CLI
+      run: curl -s https://cli.nr-ext.net/installer.sh | sudo bash
+    - name: NR1 Nerdpack Build
+      run: nr1 nerdpack:build
+    - name: ESLinting
+      run: npm run eslint-check
