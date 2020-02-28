@@ -37,8 +37,8 @@ jobs:
         run: echo "$MATRIX_CONTEXT"
 
       # Checkout base repo
-      - name: Checkout
-        uses: actions/checkout@v2
+      #- name: Checkout
+      #  uses: actions/checkout@v2
 
       # List contents of repo
       - name: List directory
@@ -68,6 +68,10 @@ jobs:
       #- uses: Mushus/checkout-submodule@v1
       #  with:
       #    submodulePath: ./foo
+      
+      # Git Status
+      - name: Git Status
+        run: git status
       
       # Git Diffs
       - name: Git Diff
