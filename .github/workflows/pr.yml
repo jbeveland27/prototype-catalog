@@ -49,8 +49,11 @@ jobs:
 #        uses: srt32/git-actions@v0.0.3
 #        with:
 #          args: git submodule update --init --recursive
+      
       # checkout all the submodules
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
       - name: Checkout submodules
         shell: bash
         run: |
@@ -59,7 +62,7 @@ jobs:
           auth_header="$(git config --local --get http.https://github.com/.extraheader)"
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
-
+      
       # List contents of repo
       - name: List directory
         run: ls -la
@@ -72,6 +75,10 @@ jobs:
       # Git Status
       - name: Git Status
         run: git status
+        
+      # Git Log
+      - name: Git Status
+        run: git log
       
       # Git Diffs
       - name: Git Diff
