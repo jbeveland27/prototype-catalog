@@ -149,12 +149,14 @@ jobs:
           node-version: "10.x"
 
       - name: Install Dependencies
+        working-directory: ./${{ SUBMODULE_NAME }}
         run: npm install
 
       - name: Install NR1 CLI
         run: curl -s https://cli.nr-ext.net/installer.sh | sudo bash
 
       - name: NR1 Nerdpack Build
+        working-directory: ./${{ SUBMODULE_NAME }}
         run: nr1 nerdpack:build
 
       # Validate Ability to publish code (Issue #2)
@@ -174,7 +176,9 @@ jobs:
       #        nr1 nerdpack:deploy --channel="$NR1_DEPLOY_CHANNEL"
 
       - name: ESLinting
+        working-directory: ./${{ SUBMODULE_NAME }}
         run: npm run eslint-check
 
       - name: Test Code
+        working-directory: ./${{ SUBMODULE_NAME }}
         run: npm test
