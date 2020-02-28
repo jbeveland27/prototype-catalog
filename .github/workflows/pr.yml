@@ -72,8 +72,7 @@ jobs:
       # Git Diffs
       - name: Git Diff
         run: |
-          git diff --name-only --diff-filter=AM ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
-          git diff --name-only --diff-filter=AM ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | awk '{for (I=1;I<=NF;I++) if ($I == "Submodule") {print $(I+1)};}'
+          git diff --submodule=log --diff-filter=AM ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
           
       # Dump all contexts again
       - name: Dump GitHub context
