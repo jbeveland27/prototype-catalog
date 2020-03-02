@@ -145,7 +145,7 @@ jobs:
 
       - name: Check for OSS Files
         run: |
-          rootDir=./
+          rootDir=./${{ env.SUBMODULE_NAME }}/
           
           declare -a files=(
             "README.md"
