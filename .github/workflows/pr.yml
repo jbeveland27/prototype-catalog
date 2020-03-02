@@ -130,18 +130,50 @@ jobs:
 #           MATRIX_CONTEXT: ${{ toJson(matrix) }}
 #         run: echo "$MATRIX_CONTEXT"
     
-      - name: cd
-        run: |
-          pwd
-          cd ${{ env.SUBMODULE_NAME }}
-          ls -la
-          pwd
+#       - name: cd
+#         run: |
+#           pwd
+#           cd ${{ env.SUBMODULE_NAME }}
+#           ls -la
+#           pwd
 
 #       - name: files-present-action
 #         uses: JJ/files-present-action@releases/v1
 #         with:
 #           # Array describing the files
 #           files: "README.md, .prettierrc.js, .eslintrc.js, .gitignore, package.json, LICENSE, THIRD_PARTY_NOTICES.md, CODE_OF_CONDUCT.md, cla.md, .github/ISSUE_TEMPLATE/bug_report.md, .github/ISSUE_TEMPLATE/enhancement.md, nr1.json, catalog/config.json"
+
+      - name: Check for OSS Files
+        run: |
+          rootDir=./
+          
+          declare -a files=(
+            "README.md"
+            ".prettierrc.js"
+            ".eslintrc.js"
+            ".gitignore"
+            "package.json"
+            "LICENSE"
+            "THIRD_PARTY_NOTICES.md"
+            "CODE_OF_CONDUCT.md"
+            "cla.md"
+            ".github/ISSUE_TEMPLATE/bug_report.md"
+            ".github/ISSUE_TEMPLATE/enhancement.md"
+            nr1.json
+            catalog/config.json
+          )
+          
+          for FILE in "${files[@]}"
+          do
+            if [ ! -f "${rootDir}$FILE" ]; then
+              printf "\n"
+              echo "Error: $FILE is missing from Nerdpack"
+              printf "\n"
+              exit 1
+            else
+              echo "Found "${rootDir}$FILE
+            fi
+          done
 
       - name: Setup node
         uses: actions/setup-node@v1
@@ -159,26 +191,56 @@ jobs:
         working-directory: ./${{ env.SUBMODULE_NAME }}
         run: nr1 nerdpack:build
 
+      # Could be its own job that depends on `checkout and build` job?
+      - name: ESLinting
+        working-directory: ./${{ env.SUBMODULE_NAME }}
+        run: npm run eslint-check
+
+      # Could be its own job that depends on `checkout and build` job?
+      - name: Test Code
+        working-directory: ./${{ env.SUBMODULE_NAME }}
+        run: npm test
+
       # Validate Ability to publish code (Issue #2)
       # Requires API key
       #- name: NR1 Nerdpack Build
       #  run: nr1 nerdpack:publish --dry-run
 
-      #- name: Publish and deploy Nerdpack
-      #  env:
-      #    NR1_API_KEY: ${{ secrets.DEMOTRON_V2_API_KEY }}
-      #    NR1_REGION: us
-      #  run: |
-      #    nr1 profiles:add --name workflow --api-key "$NR1_API_KEY" --region "$NR1_REGION" &&
-      #    nr1 nerdpack:publish --dry-run
+      # Could be its own job that depends on `checkout and build` job?
+      - name: Validate Publish Nerdpack
+        env:
+          NR1_API_KEY: ${{ secrets.DEMOTRON_V2_API_KEY }}
+          NR1_REGION: us
+        run: |
+          nr1 profiles:add --name workflow --api-key "$NR1_API_KEY" --region "$NR1_REGION" &&
+          nr1 nerdpack:publish --profile=workflow --dry-run 
 
       #        nr1 nerdpack:publish --profile=workflow &&
       #        nr1 nerdpack:deploy --channel="$NR1_DEPLOY_CHANNEL"
 
-      - name: ESLinting
-        working-directory: ./${{ env.SUBMODULE_NAME }}
-        run: npm run eslint-check
-
-      - name: Test Code
-        working-directory: ./${{ env.SUBMODULE_NAME }}
-        run: npm test
+      # Could be its own job that depends on `checkout and build` job?
+#       - name: Validate Catalog Data (#1)
+#         run: |
+#           rootDir=./
+          
+#           declare -a files=(
+#             nr1.json
+#             icon.png
+#             catalog/config.json
+#           )
+          
+#           for FILE in "${files[@]}"
+#           do
+#             if [ ! -f "${rootDir}$FILE" ]; then
+#               printf "\n"
+#               echo "Error: $FILE is missing from Nerdpack"
+#               printf "\n"
+#               exit 1
+#             else
+#               echo "Found "${rootDir}$FILE
+#             fi
+#           done
+          
+#           TODO:
+#             # Validate package.json semantic versioning
+#             # Need to validate screenshot in catalog/screenshots
