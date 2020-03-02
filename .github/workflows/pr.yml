@@ -227,6 +227,7 @@ jobs:
           NR1_API_KEY: ${{ secrets.DEMOTRON_V2_API_KEY }}
           NR1_REGION: us
         run: |
+          cd ${{ env.SUBMODULE_NAME }}
           nr1 profiles:add --name workflow --api-key "$NR1_API_KEY" --region "$NR1_REGION" &&
           nr1 nerdpack:publish --profile=workflow --dry-run 
 
