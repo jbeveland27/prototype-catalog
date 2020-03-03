@@ -266,7 +266,7 @@ jobs:
 #             # Validate package.json semantic versioning
 #             # Need to validate screenshot in catalog/screenshots
   build:
-    if: env.test == 'test'
+    if: env.TEST == 'test'
     runs-on: ubuntu-latest
     needs: checkout
     steps:
