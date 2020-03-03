@@ -1,12 +1,13 @@
 name: CI
-
+env:
+  TEST: 'test'
 on:
   pull_request:
     branches:
       - master
 
 jobs:
-  build:
+  checkout:
     runs-on: ubuntu-latest
 
     steps:
@@ -103,7 +104,11 @@ jobs:
         run: echo "$STEPS_CONTEXT"
         
       - name: Check SUBMODULE_NAME
-        run: echo ${{ env.SUBMODULE_NAME }}
+        run: |
+          echo ${{ env.SUBMODULE_NAME }}
+          echo ::set-env name=TEST::env.SUBMODULE_NAME
+          
+          
 #       # Dump all contexts again
 #       - name: Dump GitHub context
 #         env:
@@ -260,3 +265,14 @@ jobs:
 #           TODO:
 #             # Validate package.json semantic versioning
 #             # Need to validate screenshot in catalog/screenshots
+  build:
+    if: env.test == 'test'
+    runs-on: ubuntu-latest
+    needs: checkout
+    steps:
+      - name: Please don't run
+        run: echo "Uh oh. ${env.TEST}"
+    
+  
+  
+  
