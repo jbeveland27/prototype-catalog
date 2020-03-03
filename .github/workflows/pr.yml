@@ -48,8 +48,8 @@ jobs:
       #  uses: actions/checkout@v2
 
       # List contents of repo
-      - name: List directory
-        run: ls -la
+#       - name: List directory
+#         run: ls -la
 
       # This would checkout all the submodules, even though we only need the one for _this_ PR
 #      - name: Checkout submodules
@@ -77,7 +77,7 @@ jobs:
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --depth=1 --recursive --jobs 8
       
-      # List contents of repo
+#       # List contents of repo
 #       - name: List directory
 #         run: ls -la
 
@@ -86,13 +86,13 @@ jobs:
       #  with:
       #    submodulePath: ./foo
       
-      # Git Status
-      - name: Git Status
-        run: git status
+#       # Git Status
+#       - name: Git Status
+#         run: git status
         
-      # Git Log
-      - name: Git Log
-        run: git log
+#       # Git Log
+#       - name: Git Log
+#         run: git log
       
       # Git Diffs
       - name: Git Diff
@@ -209,27 +209,27 @@ jobs:
 
 
       # Could be its own job that depends on `checkout and build` job?
-#       - name: Validate Catalog Data (#1)
-#         run: |
-#           rootDir=./
+      - name: Validate Catalog Data (#1)
+        run: |
+          rootDir=./${{ env.SUBMODULE_NAME }}/
           
-#           declare -a files=(
-#             nr1.json
-#             icon.png
-#             catalog/config.json
-#           )
+          declare -a files=(
+            nr1.json
+            icon.png
+            catalog/config.json
+          )
           
-#           for FILE in "${files[@]}"
-#           do
-#             if [ ! -f "${rootDir}$FILE" ]; then
-#               printf "\n"
-#               echo "Error: $FILE is missing from Nerdpack"
-#               printf "\n"
-#               exit 1
-#             else
-#               echo "Found "${rootDir}$FILE
-#             fi
-#           done
+          for FILE in "${files[@]}"
+          do
+            if [ ! -f "${rootDir}$FILE" ]; then
+              printf "\n"
+              echo "Error: $FILE is missing from Nerdpack"
+              printf "\n"
+              exit 1
+            else
+              echo "Found "${rootDir}$FILE
+            fi
+          done
           
 #           TODO:
 #             # Validate package.json semantic versioning
