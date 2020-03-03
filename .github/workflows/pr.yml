@@ -271,7 +271,7 @@ jobs:
     needs: checkout
     steps:
       - name: Please don't run
-        run: echo "Uh oh. ${env.TEST}"
+        run: echo "Uh oh. ${{ env.SUBMODULE_NAME }}"
     
   
   
