@@ -1,13 +1,12 @@
 name: CI
-env:
-  LOG: 'TRUE'
+
 on:
   pull_request:
     branches:
       - master
 
 jobs:
-  Log Context:
+  log_context:
     runs-on: [ubuntu-latest]
     if: 1 == 1 # make false to skip
     steps:
