@@ -112,11 +112,11 @@ jobs:
 #           ls -la
 #           pwd
 
-#       - name: files-present-action
-#         uses: JJ/files-present-action@releases/v1
-#         with:
-#           # Array describing the files
-#           files: "README.md, .prettierrc.js, .eslintrc.js, .gitignore, package.json, LICENSE, THIRD_PARTY_NOTICES.md, CODE_OF_CONDUCT.md, cla.md, .github/ISSUE_TEMPLATE/bug_report.md, .github/ISSUE_TEMPLATE/enhancement.md, nr1.json, catalog/config.json"
+      - name: files-present-action
+        uses: ./.github/actions/files-present-action
+        with:
+          # Array describing the files
+          files: "README.md, .prettierrc.js, .eslintrc.js, .gitignore, package.json, LICENSE, THIRD_PARTY_NOTICES.md, CODE_OF_CONDUCT.md, cla.md, .github/ISSUE_TEMPLATE/bug_report.md, .github/ISSUE_TEMPLATE/enhancement.md, nr1.json, catalog/config.json"
 
       - name: Check for OSS Files
         run: |
