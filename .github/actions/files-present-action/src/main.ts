@@ -12,6 +12,7 @@ async function run() {
     var doesntExist: string[] = [];
     fileList.forEach(function(file) {
       const pathedFile: string = path.join(inputPath, file);
+      console.debug("Pathed file: " + pathedFile);
       if (!fs.existsSync(pathedFile)) {
         doesntExist.push(pathedFile);
       }
