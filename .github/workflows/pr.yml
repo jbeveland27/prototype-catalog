@@ -70,7 +70,6 @@ jobs:
             exit 1
           else
             echo ::set-env name=SUBMODULE_NAME::$SUB_NAME
-            echo SUBMODULE_NAME: ${{ env.SUBMODULE_NAME }}
           fi
       
       - name: Check SUBMODULE_NAME was set
@@ -82,7 +81,7 @@ jobs:
       - name: Create submodule_name.txt artifact
         if: env.SUBMODULE_NAME != ''
         run: |
-          ${{ env.SUBMODULE_NAME }} > submodule_name.txt
+          echo ${{ env.SUBMODULE_NAME }} > submodule_name.txt
 
       - name: Upload SUBMODULE_NAME artifact
         uses: actions/upload-artifact@v1
