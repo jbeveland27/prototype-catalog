@@ -65,7 +65,7 @@ jobs:
           git diff --submodule=log --diff-filter=AM ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
           echo ::set-env name=SUBMODULE_NAME::$(git diff --submodule=log --diff-filter=AM ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | awk '{for (I=1;I<=NF;I++) if ($I == "Submodule") {print $(I+1)};}')
 
-          if [ -z "$SUBMODULE_NAME" ]; then
+          if [ -z "${{ env.SUBMODULE_NAME }}" ]; then
             echo "Error: Could not determine submodule name"
             exit 1
           else
