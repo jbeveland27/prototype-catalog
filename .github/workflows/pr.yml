@@ -106,6 +106,7 @@ jobs:
         uses: ./.github/actions/files-present-action
         with:
           # Array describing the files
+          path: ./${{ env.SUBMODULE_NAME }}
           files: "README.md, .prettierrc.js, .eslintrc.js, .gitignore, package.json, LICENSE, THIRD_PARTY_NOTICES.md, CODE_OF_CONDUCT.md, cla.md, .github/ISSUE_TEMPLATE/bug_report.md, .github/ISSUE_TEMPLATE/enhancement.md, nr1.json, catalog/config.json"
 
       # Old method of checking for OSS files
