@@ -63,14 +63,20 @@ jobs:
       - name: Get/Set SUBMODULE_NAME
         run: |
           git diff --submodule=log --diff-filter=AM ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
-          echo ::set-env name=SUBMODULE_NAME::$(git diff --submodule=log --diff-filter=AM ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | awk '{for (I=1;I<=NF;I++) if ($I == "Submodule") {print $(I+1)};}')
+          SUB_NAME=$(git diff --submodule=log --diff-filter=AM ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | awk '{for (I=1;I<=NF;I++) if ($I == "Submodule") {print $(I+1)};}')
 
-          if [ -z "${{ env.SUBMODULE_NAME }}" ]; then
+          if [ -z "$SUB_NAME" ]; then
             echo "Error: Could not determine submodule name"
             exit 1
           else
+            echo ::set-env name=SUBMODULE_NAME::$SUB_NAME
             echo SUBMODULE_NAME: ${{ env.SUBMODULE_NAME }}
           fi
+      
+      - name: Check SUBMODULE_NAME was set
+        if: env.SUBMODULE_NAME != ''
+        run: | 
+          echo SUBMODULE_NAME: ${{ env.SUBMODULE_NAME }}
       
       # Upload SUBMODULE_NAME as artifact to be used in other jobs
       - name: Create submodule_name.txt artifact
