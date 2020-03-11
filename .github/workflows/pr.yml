@@ -101,6 +101,7 @@ jobs:
         run: |
           cd ./.github/actions/files-present-action
           npm install
+          npm run build
           
       - name: Display main.ts
         run: |
