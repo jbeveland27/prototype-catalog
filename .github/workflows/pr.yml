@@ -267,8 +267,8 @@ jobs:
       # TODO: Should add check in case submodule_name is null
       - name: Set SUBMODULE_NAME env var
         run: | 
-          echo ::set-env name=SUBMODULE_NAME::$(cat submodule_name.txt)
-          echo SUBMODULE_NAME: $(cat submodule_name.txt)
+          echo ::set-env name=SUBMODULE_NAME::$(cat submodule_name/submodule_name.txt)
+          echo SUBMODULE_NAME: $(cat submodule_name/submodule_name.txt)
 
       - name: ESLinting
         if: env.SUBMODULE_NAME != ''
@@ -291,8 +291,8 @@ jobs:
       # TODO: Should add check in case submodule_name is null
       - name: Set SUBMODULE_NAME env var
         run: | 
-          echo ::set-env name=SUBMODULE_NAME::$(cat submodule_name.txt)
-          echo SUBMODULE_NAME: $(cat submodule_name.txt)
+          echo ::set-env name=SUBMODULE_NAME::$(cat submodule_name/submodule_name.txt)
+          echo SUBMODULE_NAME: $(cat submodule_name/submodule_name.txt)
 
       # Validate Ability to publish code (Issue #2)
       # Requires API Key stored as secret
