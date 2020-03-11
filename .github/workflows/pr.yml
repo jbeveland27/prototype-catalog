@@ -287,7 +287,7 @@ jobs:
 #         run: npm run eslint-check
 
       - name: Run eslint
-      - uses: stefanoeb/eslint-action@1.0.2
+        uses: stefanoeb/eslint-action@1.0.2
         with:
           files: ./${{ env.SUBMODULE_NAME }}/nerdlets/
 
