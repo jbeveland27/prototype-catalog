@@ -101,6 +101,12 @@ jobs:
         run: |
           cd ./.github/actions/files-present-action
           npm install
+          
+      - name: Display main.ts
+        run: |
+          ls -la ./.github/actions/files-present-action
+          cd ./.github/actions/files-present-action/src
+          cat main.ts
       
       - name: files-present-action
         uses: ./.github/actions/files-present-action
