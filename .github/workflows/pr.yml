@@ -270,21 +270,26 @@ jobs:
           echo ::set-env name=SUBMODULE_NAME::$(cat submodule_name/submodule_name.txt)
           echo SUBMODULE_NAME: $(cat submodule_name/submodule_name.txt)
 
-      - name: Setup node
-        if: env.SUBMODULE_NAME != ''
-        uses: actions/setup-node@v1
+#       - name: Setup node
+#         if: env.SUBMODULE_NAME != ''
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: "10.x"
+        
+#       - name: Install Dependencies
+#         if: env.SUBMODULE_NAME != ''
+#         working-directory: ./${{ env.SUBMODULE_NAME }}
+#         run: npm install
+        
+#       - name: ESLinting
+#         if: env.SUBMODULE_NAME != ''
+#         working-directory: ./${{ env.SUBMODULE_NAME }}
+#         run: npm run eslint-check
+
+      - name: Run eslint
+      - uses: stefanoeb/eslint-action@1.0.2
         with:
-          node-version: "10.x"
-        
-      - name: Install Dependencies
-        if: env.SUBMODULE_NAME != ''
-        working-directory: ./${{ env.SUBMODULE_NAME }}
-        run: npm install
-        
-      - name: ESLinting
-        if: env.SUBMODULE_NAME != ''
-        working-directory: ./${{ env.SUBMODULE_NAME }}
-        run: npm run eslint-check
+          files: nerdlets/
 
   publish: 
     name: Publish Nerdpack
