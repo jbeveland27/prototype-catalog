@@ -20,9 +20,9 @@ else
 fi
 
 if [ -z "$1" ]; then
-    submodule_name="$1"
-else
     submodule_name="."
+else
+    submodule_name="$1"
 fi
 
 # if [ -z "$2" ]; then
