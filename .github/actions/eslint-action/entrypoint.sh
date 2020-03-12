@@ -31,6 +31,6 @@ fi
 #     glob="$2"
 # fi
 
-echo "## Running ESLint"
+echo "## Running eslint-check"
 
 sh -c "cd $submodule_name ; $setup npm run eslint-check"
