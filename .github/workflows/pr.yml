@@ -1,6 +1,13 @@
 name: CI
 
 on:
+  push:
+    branches:
+      - master
+      - v*
+    tags:
+      - v*
+
   pull_request:
     branches:
       - master
@@ -102,12 +109,6 @@ jobs:
           cd ./.github/actions/files-present-action
           npm install
           npm run build
-          
-      - name: Display main.ts
-        run: |
-          ls -la ./.github/actions/files-present-action
-          cd ./.github/actions/files-present-action/src
-          cat main.ts
       
       - name: files-present-action
         uses: ./.github/actions/files-present-action
@@ -266,9 +267,6 @@ jobs:
       
       - name: Set SUBMODULE_NAME env var
         run: |
-          # Old way
-          # echo ::set-env name=SUBMODULE_NAME::$(cat submodule_name/submodule_name.txt)
-          # echo SUBMODULE_NAME: $(cat submodule_name/submodule_name.txt)          
           SUB_NAME=$(cat submodule_name/submodule_name.txt)
 
           if [ -z "$SUB_NAME" ]; then
@@ -331,10 +329,6 @@ jobs:
       
       - name: Set SUBMODULE_NAME env var
         run: |
-          # Old way
-          # echo ::set-env name=SUBMODULE_NAME::$(cat submodule_name/submodule_name.txt)
-          # echo SUBMODULE_NAME: $(cat submodule_name/submodule_name.txt)
-          
           SUB_NAME=$(cat submodule_name/submodule_name.txt)
 
           if [ -z "$SUB_NAME" ]; then
@@ -375,11 +369,17 @@ jobs:
         with:
           name: submodule_name
       
-      # TODO: Should add check in case submodule_name is null
       - name: Set SUBMODULE_NAME env var
-        run: | 
-          echo ::set-env name=SUBMODULE_NAME::$(cat submodule_name/submodule_name.txt)
-          echo SUBMODULE_NAME: $(cat submodule_name/submodule_name.txt)
+        run: |
+          SUB_NAME=$(cat submodule_name/submodule_name.txt)
+
+          if [ -z "$SUB_NAME" ]; then
+            echo "Error: Could not determine submodule name from artifact"
+            exit 1
+          else
+            echo ::set-env name=SUBMODULE_NAME::$SUB_NAME
+            echo SUBMODULE_NAME: $SUB_NAME
+          fi 
 
       # Validate Ability to publish code (Issue #2)
       # Requires API Key stored as secret
