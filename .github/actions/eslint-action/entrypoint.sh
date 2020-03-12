@@ -33,4 +33,4 @@ fi
 
 echo "## Running ESLint"
 
-sh -c "cd submodule_name ; $setup npm run eslint-check"
+sh -c "cd $submodule_name ; $setup npm run eslint-check"
