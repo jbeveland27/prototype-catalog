@@ -289,7 +289,8 @@ jobs:
       - name: Run eslint
         uses: stefanoeb/eslint-action@1.0.2
         with:
-          files: ./${{ env.SUBMODULE_NAME }}/nerdlets/
+#           files: ./${{ env.SUBMODULE_NAME }}/nerdlets/
+          path: ${{ env.SUBMODULE_NAME }}
 
   publish: 
     name: Publish Nerdpack
