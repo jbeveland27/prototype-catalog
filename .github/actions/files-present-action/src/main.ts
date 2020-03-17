@@ -5,6 +5,7 @@ import fs from "fs";
 async function run() {
     validatePackageJson();
     validateCatalogFiles();
+    validateScreenshotsDir();
 }
 
 /**
@@ -12,12 +13,10 @@ async function run() {
  * @see {@link https://github.com/newrelic/nr1-catalog/issues/3|Issue 3}
  */
 function validateCatalogFiles() {
-    console.debug("Running validateCatalogFiles");
     try {
+        const inputPath: string = core.getInput("path", { required: true });
         const files = core.getInput("files");
         const fileList = files.split(/,\s+/);
-
-        const inputPath: string = core.getInput("path", { required: true });
 
         var doesntExist: string[] = [];
         fileList.forEach(function (file) {
@@ -35,6 +34,27 @@ function validateCatalogFiles() {
     }
 }
 
+function validateScreenshotsDir() {
+    const wd: string = process.env[`GITHUB_WORKSPACE`] || "";
+    const inputPath: string = core.getInput("path", { required: true });
+    const screenshotsPath: string = path.join(wd, inputPath, "catalog/screenshots");
+
+    // TODO: Remove
+    // if (fs.readdirSync(screenshotsPath).length === 0) {
+    //     core.setFailed("")
+    // }
+
+    fs.readdir(screenshotsPath, (err, files) => {
+        if (err) {
+            core.setFailed("Failed to read catalog/screenshots directory");
+        }
+
+        if (!files.length) {
+            core.setFailed("No screenshots present in catalog/screenshots. Must have at least one.");
+        }
+    });
+}
+
 /**
  * package.json should contain the following commands:
  *  scripts.eslint-check
@@ -42,16 +62,23 @@ function validateCatalogFiles() {
  * @see {@link https://github.com/newrelic/nr1-catalog/issues/3|Issue 3}
  */
 function validatePackageJson() {
-    console.debug("Running validatePackageJson");
     try {
         const wd: string = process.env[`GITHUB_WORKSPACE`] || "";
         const inputPath: string = core.getInput("path", { required: true });
         const packageJsonPath: string = path.join(wd, inputPath, "package.json");
         const packageJson = require(packageJsonPath);
 
-        console.debug("PackageJson", packageJson);
-        console.debug("process.env:", process.env);
-        // return process.env.npm_package_scripts && process.env.npm_package_scripts["eslint-check"];
+        if (!packageJson.hasOwnProperty('scripts')) {
+            core.setFailed("scripts missing from package.json");
+        }
+
+        if (!packageJson.scripts.hasOwnProperty('eslint-check')) {
+            core.setFailed("eslint-check missing from package.json#scripts");
+        }
+
+        if (!packageJson.scripts.hasOwnProperty('eslint-fix')) {
+            core.setFailed("eslint-fix missing from package.json#scripts");
+        }
     } catch (error) {
         core.setFailed(error.message);
     }

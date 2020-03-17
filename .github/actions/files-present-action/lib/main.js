@@ -26,6 +26,7 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         validatePackageJson();
         validateCatalogFiles();
+        validateScreenshotsDir();
     });
 }
 /**
@@ -33,11 +34,10 @@ function run() {
  * @see {@link https://github.com/newrelic/nr1-catalog/issues/3|Issue 3}
  */
 function validateCatalogFiles() {
-    console.debug("Running validateCatalogFiles");
     try {
+        const inputPath = core.getInput("path", { required: true });
         const files = core.getInput("files");
         const fileList = files.split(/,\s+/);
-        const inputPath = core.getInput("path", { required: true });
         var doesntExist = [];
         fileList.forEach(function (file) {
             const pathedFile = path.join(inputPath, file);
@@ -54,6 +54,23 @@ function validateCatalogFiles() {
         core.setFailed(error.message);
     }
 }
+function validateScreenshotsDir() {
+    const wd = process.env[`GITHUB_WORKSPACE`] || "";
+    const inputPath = core.getInput("path", { required: true });
+    const screenshotsPath = path.join(wd, inputPath, "catalog/screenshots");
+    // TODO: Remove
+    // if (fs.readdirSync(screenshotsPath).length === 0) {
+    //     core.setFailed("")
+    // }
+    fs_1.default.readdir(screenshotsPath, (err, files) => {
+        if (err) {
+            core.setFailed("Failed to read catalog/screenshots directory");
+        }
+        if (!files.length) {
+            core.setFailed("No screenshots present in catalog/screenshots. Must have at least one.");
+        }
+    });
+}
 /**
  * package.json should contain the following commands:
  *  scripts.eslint-check
@@ -61,14 +78,20 @@ function validateCatalogFiles() {
  * @see {@link https://github.com/newrelic/nr1-catalog/issues/3|Issue 3}
  */
 function validatePackageJson() {
-    console.debug("Running validatePackageJson");
     try {
-        const packageJson = require("../package.json");
-        console.debug("PackageJson", packageJson);
-        console.debug("npm_package_scripts", process.env.npm_package_scripts);
-        console.debug("npm_package_scripts", process.env.npm_package_scripts_eslint_check);
-        console.debug("npm_package_scripts", process.env.npm_package_scripts_eslint_fix);
-        // return process.env.npm_package_scripts && process.env.npm_package_scripts["eslint-check"];
+        const wd = process.env[`GITHUB_WORKSPACE`] || "";
+        const inputPath = core.getInput("path", { required: true });
+        const packageJsonPath = path.join(wd, inputPath, "package.json");
+        const packageJson = require(packageJsonPath);
+        if (!packageJson.hasOwnProperty('scripts')) {
+            core.setFailed("scripts missing from package.json");
+        }
+        if (!packageJson.scripts.hasOwnProperty('eslint-check')) {
+            core.setFailed("eslint-check missing from package.json#scripts");
+        }
+        if (!packageJson.scripts.hasOwnProperty('eslint-fix')) {
+            core.setFailed("eslint-fix missing from package.json#scripts");
+        }
     }
     catch (error) {
         core.setFailed(error.message);
