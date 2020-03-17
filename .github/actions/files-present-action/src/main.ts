@@ -47,9 +47,7 @@ function validatePackageJson() {
         const packageJson = require("../package.json");
         console.debug("PackageJson", packageJson);
 
-        console.debug("npm_package_scripts", process.env.npm_package_scripts);
-        console.debug("npm_package_scripts", process.env.npm_package_scripts_eslint_check);
-        console.debug("npm_package_scripts", process.env.npm_package_scripts_eslint_fix);
+        console.debug("npm_package_scripts", process.env);
         // return process.env.npm_package_scripts && process.env.npm_package_scripts["eslint-check"];
     } catch (error) {
         core.setFailed(error.message);
