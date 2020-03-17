@@ -473,15 +473,14 @@ jobs:
   #   if it doesn't exist
   #     call nr1 nerdpack:uuid -gf
   #     copy uuid value from nr1.json INTO globals.json
-  #     commit SUBMODULE_NAME/nr1.json AND globals.json
+  #     commit globals.json
   #     TODO: evaluate if this is all we should do, as I'm unsure if the CI tooling can commit to a PR branch from a fork without permission.
   #     TODO: Copying the UUID into nr1.json could possibly happen on merge 
   #   else
   #     copy value from globals.json into nr1.json
-  #     - commit updated nr1.json to submodule repo
-  #     - possibly call git submodule update remote (to update the SHA we are using for the submodule?)
-  #     - finally, commit the updated submodule SHA commit value to the PR branch (this effectively completes the update of the nr1.json with the correct UUID)
-  validate-catalog-uuid:
+  #
+  # TODO: Check that this only happens on release
+  validate-catalog-uuid-and-publish:
     name: test
     needs: checkout-and-build
     if: github.event_name != 'pull_request'  
@@ -522,6 +521,38 @@ jobs:
           fi
 
       # TODO: Create action to handle finding and creating/updating UUID
+
+      # Validate Ability to publish code (Issue #2)
+      # Requires API Key stored as secret
+      - name: Publish Nerdpack
+        if: env.SUBMODULE_NAME != ''
+        env:
+          NR1_API_KEY_US: ${{ secrets.DEMOTRON_V2_API_KEY_US }}
+          NR1_API_KEY_EU: ${{ secrets.DEMOTRON_V2_API_KEY_EU }}
+          NR1_API_KEY_STAGING: ${{ secrets.DEMOTRON_V2_API_KEY_STAGING }}
+          NR1_REGION_US: us
+          NR1_REGION_EU: eu
+          NR1_REGION_STAGING: staging
+        run: |
+          cd ${{ env.SUBMODULE_NAME }}
+          nr1 profiles:add --name workflow_staging --api-key "$NR1_API_KEY_STAGING" --region "$NR1_REGION_US"
+          nr1 profiles:add --name workflow_eu --api-key "$NR1_API_KEY_EU" --region "$NR1_REGION_US"
+          nr1 profiles:add --name workflow_us --api-key "$NR1_API_KEY_US" --region "$NR1_REGION_US"
+
+          # check current profile
+          nr1 profiles:list
+          
+          # submit catalog for US
+          nr1 nerdpack:publish --profile=workflow #just to production
+          nr1 catalog:submit
+
+          # submit catalog for EU
+          nr1 profiles:default --name=workflow_eu
+          nr1 catalog:submit
+
+          # submit catalog for STAGING
+          nr1 profiles:default --name=workflow_staging
+          nr1 catalog:submit
 
 
   publish: 

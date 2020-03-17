@@ -44,10 +44,12 @@ function validateCatalogFiles() {
 function validatePackageJson() {
     console.debug("Running validatePackageJson");
     try {
-        const packageJson = require("../package.json");
-        console.debug("PackageJson", packageJson);
+        const inputPath: string = core.getInput("path", { required: true });
+        const packageJsonPath: string = path.join(inputPath, "package.json");
+        const packageJson = require(packageJsonPath);
 
-        console.debug("npm_package_scripts", process.env);
+        console.debug("PackageJson", packageJson);
+        console.debug("process.env:", process.env);
         // return process.env.npm_package_scripts && process.env.npm_package_scripts["eslint-check"];
     } catch (error) {
         core.setFailed(error.message);
