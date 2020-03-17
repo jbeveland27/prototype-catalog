@@ -44,8 +44,9 @@ function validateCatalogFiles() {
 function validatePackageJson() {
     console.debug("Running validatePackageJson");
     try {
+        const wd: string = process.env[`GITHUB_WORKSPACE`] || "";
         const inputPath: string = core.getInput("path", { required: true });
-        const packageJsonPath: string = path.join(inputPath, "package.json");
+        const packageJsonPath: string = path.join(wd, inputPath, "package.json");
         const packageJson = require(packageJsonPath);
 
         console.debug("PackageJson", packageJson);
