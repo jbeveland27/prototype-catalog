@@ -40,7 +40,7 @@ function isPackageObj(value): value is PackageObj {
 }
 
 async function getCommit(sha: string): Promise<CommitResponse> {
-  const url = `https://api.github.com/repos/${process.env.GITHUB_REPOSITORY}/commits/${sha}`
+  const url = `https://api.github.com/repos/${process.env.GITHUB_ACTOR}/${process.env.SUBMODULE_NAME}/commits/${sha}`
   const headers = token ? {
     Authorization: `Bearer ${token}`
   } : undefined
