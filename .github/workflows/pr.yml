@@ -418,6 +418,20 @@ jobs:
           path: ./${{ env.SUBMODULE_NAME }}
           files: "README.md, .prettierrc.js, .eslintrc.js, .gitignore, package.json, LICENSE, THIRD_PARTY_NOTICES.md, CODE_OF_CONDUCT.md, cla.md, .github/ISSUE_TEMPLATE/bug_report.md, .github/ISSUE_TEMPLATE/enhancement.md, nr1.json, icon.png, catalog/config.json"
 
+      - name: package.json version check
+        if: env.SUBMODULE_NAME != ''
+        uses: EndBud/version-check@v1
+        id: versionCheck
+        with:
+          diff-search: true
+          file-name: ./${{ env.SUBMODULE_NAME }}/package.json
+      - name: version changed
+        if: steps.check.outputs.changed == 'true'
+        run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
+
+      - name: version unchanged
+        if: steps.check.outputs.changed != 'true'
+        run: 'echo "No version change :/"'
       # Old method of checking for OSS files
 #      - name: Check for OSS Files
 #        if: env.SUBMODULE_NAME != ''
