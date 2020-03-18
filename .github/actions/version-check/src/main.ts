@@ -222,8 +222,8 @@ async function processDirectory(dir: string, commits: Commit[]) {
 
     if (!isPackageObj(packageObj))
       throw new Error('Can\'t find version field')
-
-    if (commits.length >= 20)
+    console.debug("Commits: ", commits);
+    if (commits && commits.length >= 20)
       console.warn('This workflow run topped the commit limit set by GitHub webhooks: that means that commits could not appear and that the run could not find the version change.')
 
     await checkCommits(commits, packageObj.version)
