@@ -420,7 +420,7 @@ jobs:
 
       - name: package.json version check
         if: env.SUBMODULE_NAME != ''
-        uses: EndBud/version-check@v1
+        uses: EndBug/version-check@v1
         id: versionCheck
         with:
           diff-search: true
