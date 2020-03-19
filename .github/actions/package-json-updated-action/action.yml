@@ -1,0 +1,18 @@
+name: 'Package Version Updated'
+description: 'Indicates when the package.json version has updated in the most recent commit'
+branding:
+    icon: 'arrow-up'
+    color: 'yellow'
+inputs:
+    currentRef:
+        description: 'head HSA that represents head of the PR branch'
+    previousRef:
+        description: 'base SHA that represents head of the master branch'
+outputs:
+    has-updated:
+        description: 'Whether the package.json version has been updated'
+    current-package-version:
+        description: 'The current package.json version'
+runs:
+    using: 'node12'
+    main: 'index.js'
