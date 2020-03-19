@@ -443,11 +443,18 @@ jobs:
 #        if: steps.check.outputs.changed != 'true'
 #        run: 'echo "No version change :/"'
 
+      # Custom action to check for package.json version
+      - name: compile package-json-updated-action
+        if: env.SUBMODULE_NAME != ''
+        run: |
+          cd ./.github/actions/package-json-updated-action
+          npm install
+
       - name: package.json version check output
         uses: ./.github/actions/package-json-updated-action
         with:
-          previousRef: ${{ github.event.pull_request.base.sha }}
           currentRef: ${{ github.event.pull_request.head.sha }}
+          previousRef: ${{ github.event.pull_request.base.sha }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: echo version check output
