@@ -444,7 +444,7 @@ jobs:
 #        run: 'echo "No version change :/"'
 
       - name: package.json version check output
-        uses: MontyD/package-json-updated-action
+        uses: MontyD/package-json-updated-action@1.0.0
         id: version-updated
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -515,7 +515,7 @@ jobs:
   #
   # TODO: Check that this only happens on release
   validate-catalog-uuid-and-publish:
-    name: test
+    name: validate-catalog-uuid-and-publish
     needs: checkout-and-build
     if: github.event_name != 'pull_request'  
     runs-on: ubuntu-latest
