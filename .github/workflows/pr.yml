@@ -444,7 +444,7 @@ jobs:
 #        run: 'echo "No version change :/"'
 
       - name: package.json version check output
-      - uses: MontyD/package-json-updated-action
+        uses: MontyD/package-json-updated-action
         id: version-updated
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
