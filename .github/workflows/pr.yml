@@ -419,38 +419,38 @@ jobs:
           files: "README.md, .prettierrc.js, .eslintrc.js, .gitignore, package.json, LICENSE, THIRD_PARTY_NOTICES.md, CODE_OF_CONDUCT.md, cla.md, .github/ISSUE_TEMPLATE/bug_report.md, .github/ISSUE_TEMPLATE/enhancement.md, nr1.json, icon.png, catalog/config.json"
 
       # Custom action to check new npm version in package.json
-#      - name: compile version-check action
-#        if: env.SUBMODULE_NAME != ''
-#        run: |
-#          cd ./.github/actions/version-check
-#          npm install
-#          npm run build
-#
-#      - name: package.json version check
-#        if: env.SUBMODULE_NAME != ''
-#        uses: ./.github/actions/version-check
-#        id: versionCheck
-#        with:
-#          diff-search: true
-#          file-name: ./${{ env.SUBMODULE_NAME }}/package.json
-#          token: ${{ secrets.GITHUB_TOKEN }}
-
-#      - name: version changed
-#        if: steps.check.outputs.changed == 'true'
-#        run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
-#
-#      - name: version unchanged
-#        if: steps.check.outputs.changed != 'true'
-#        run: 'echo "No version change :/"'
-
-      - name: package.json version check output
-        uses: MontyD/package-json-updated-action@1.0.0
-        id: version-updated
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: echo version check output
+      - name: compile version-check action
+        if: env.SUBMODULE_NAME != ''
         run: |
-          echo ${{ steps.version-updated.outputs.has-updated }}
+          cd ./.github/actions/version-check
+          npm install
+          npm run build
+
+      - name: package.json version check
+        if: env.SUBMODULE_NAME != ''
+        uses: ./.github/actions/version-check
+        id: versionCheck
+        with:
+          diff-search: true
+          file-name: ./${{ env.SUBMODULE_NAME }}/package.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: version changed
+        if: steps.check.outputs.changed == 'true'
+        run: 'echo "Version change found! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
+
+      - name: version unchanged
+        if: steps.check.outputs.changed != 'true'
+        run: 'echo "No version change :/"'
+
+#      - name: package.json version check output
+#        uses: MontyD/package-json-updated-action@1.0.0
+#        id: version-updated
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: echo version check output
+#        run: |
+#          echo ${{ steps.version-updated.outputs.has-updated }}
 
       # Old method of checking for OSS files
 #      - name: Check for OSS Files
