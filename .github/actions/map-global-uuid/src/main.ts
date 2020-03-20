@@ -46,7 +46,7 @@ async function run() {
 
       const {exec} = require('child_process')
       exec(
-        '/usr/bin/nr1 nerdpack:uuid -gf',
+        '/usr/bin/nr1',
         {
           cwd: submodulePath
         },
