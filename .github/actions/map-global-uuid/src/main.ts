@@ -53,7 +53,7 @@ async function run() {
           console.error(`exec error: ${err}`)
           core.setFailed(`map-global-uuid failed: ${err.message}`)
         } else {
-          exec('nr1 nerdpack:info', (err: any, stdout: any, stderr: any) => {
+          exec('/usr/bin/nr1', ['nerdpack:info'], (err: any, stdout: any, stderr: any) => {
             if (err) {
               //some err occurred
               console.error(`exec error: ${err}`)
