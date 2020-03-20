@@ -46,14 +46,14 @@ async function run() {
       // options.cwd = submodulePath
       // await exec.exec(`"${nr1}"`, ['nerdpack:info'], {cwd: submodulePath})
 
-      const {exec} = require('child_process')
-      exec('cd', (err: any, stdout: any, stderr: any) => {
+      const {exec, execFile} = require('child_process')
+      execFile('cd', [`${submodulePath}`], (err: any, stdout: any, stderr: any) => {
         if (err) {
           //some err occurred
           console.error(`exec error: ${err}`)
           core.setFailed(`map-global-uuid failed: ${err.message}`)
         } else {
-          exec('/usr/bin/nr1', ['nerdpack:info'], (err: any, stdout: any, stderr: any) => {
+          execFile('/usr/bin/nr1', ['nerdpack:info'], (err: any, stdout: any, stderr: any) => {
             if (err) {
               //some err occurred
               console.error(`exec error: ${err}`)
