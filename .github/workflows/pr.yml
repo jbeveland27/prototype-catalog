@@ -557,12 +557,6 @@ jobs:
 #          fi
 
       # TODO: Convert these steps to docker-based action
-      - name: Install NR1 CLI
-        if: env.SUBMODULE_NAME != ''
-        run: |
-          curl -s https://cli.nr-ext.net/installer.sh | sudo bash
-          nr1 profiles:add --name workflow_staging --api-key "$NR1_API_KEY" --region "$NR1_REGION"
-          which nr1
 
       - name: Setup node
         if: env.SUBMODULE_NAME != ''
@@ -570,6 +564,13 @@ jobs:
         with:
           node-version: "10.x"
 
+      - name: Install NR1 CLI
+        if: env.SUBMODULE_NAME != ''
+        run: |
+          curl -s https://cli.nr-ext.net/installer.sh | sudo bash
+          nr1 profiles:add --name workflow_staging --api-key "$NR1_API_KEY" --region "$NR1_REGION"
+          which nr1
+          
       - name: compile map-global-uuid
         if: env.SUBMODULE_NAME != ''
         run: |
