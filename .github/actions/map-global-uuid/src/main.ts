@@ -44,6 +44,8 @@ async function run() {
       // Get generated uuid from nr1.json
       const nr1JsonPath: string = path.join(submoduleName, 'nr1.json')
       const nr1Json = require(nr1JsonPath)
+      console.debug('nr1Json after generation: ', nr1Json)
+      console.debug('globalsJson: ', globalsJson)
 
       // Copy uuid out of nr1.json into globals.json
       const uuid = nr1Json.hasOwnProperty('id') ? nr1Json.id : ''
