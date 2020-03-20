@@ -570,6 +570,8 @@ jobs:
           curl -s https://cli.nr-ext.net/installer.sh | sudo bash
           nr1 profiles:add --name workflow_staging --api-key "$NR1_API_KEY" --region "$NR1_REGION"
           which nr1
+          cd ${{ env.SUBMODULE_NAME }}
+          nr1 nerdpack:info
           
       - name: compile map-global-uuid
         if: env.SUBMODULE_NAME != ''
