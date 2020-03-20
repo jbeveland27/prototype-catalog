@@ -46,15 +46,15 @@ async function run() {
 
       const {exec} = require('child_process')
       exec(
-        'nr1 nerdpack:uuid -gf',
+        '/usr/bin/nr1 nerdpack:uuid -gf',
         {
-          cwd: submodulePath,
-          shell: true
+          cwd: submodulePath
         },
         (err: any, stdout: any, stderr: any) => {
           if (err) {
             //some err occurred
-            console.error(err)
+            console.error(`exec error: ${err}`)
+            core.setFailed(`map-global-uuid failed: ${err.message}`)
           } else {
             // the *entire* stdout and stderr (buffered)
             console.log(`stdout: ${stdout}`)
