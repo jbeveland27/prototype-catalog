@@ -53,7 +53,7 @@ async function run() {
 
       // Copy uuid out of nr1.json into globals.json
       const uuid = nr1Json.hasOwnProperty('id') ? nr1Json.id : ''
-      globalsJson.submoduleName = uuid
+      globalsJson[submoduleName] = uuid
       fs.writeFile(globalsJsonPath, JSON.stringify(globalsJson, null, 2), function writeJSON(err) {
         if (err) return console.log(err)
         console.debug('globals after writing uuid: ', JSON.stringify(globalsJson, null, 2))
