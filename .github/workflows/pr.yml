@@ -519,6 +519,7 @@ jobs:
       NR1_API_KEY: ${{ secrets.DEMOTRON_V2_API_KEY_PROD }}
       NR1_REGION: us
 #    needs: checkout-and-build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
 
