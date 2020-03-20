@@ -41,36 +41,36 @@ async function run() {
       //   nr1 nerdpack:uuid -gf
       console.debug(`Generating new uuid for submodule: ${submoduleName}`)
       console.debug(`Path: ${submodulePath}`)
-      // const nr1 = await io.which('nr1', true)
-      // await exec.exec(`"${nr1}" nerdpack:uuid -gf`, [], {cwd: submodulePath})
+      const nr1 = await io.which('nr1', true)
+      await exec.exec(`"${nr1}"`, ['nerdpack:info'], {cwd: submodulePath})
 
-      const {exec, spawn} = require('child_process')
+      // const {exec, spawn} = require('child_process')
 
-      const pwd = spawn('pwd', [], {cwd: submodulePath})
-      pwd.stdout.on('data', (data: any) => {
-        console.log(`stdout: ${data}`)
-      })
+      // const pwd = spawn('pwd', [], {cwd: submodulePath})
+      // pwd.stdout.on('data', (data: any) => {
+      //   console.log(`stdout: ${data}`)
+      // })
 
-      pwd.stderr.on('data', (data: any) => {
-        console.log(`stderr: ${data}`)
-      })
+      // pwd.stderr.on('data', (data: any) => {
+      //   console.log(`stderr: ${data}`)
+      // })
 
-      pwd.on('close', (code: any) => {
-        console.log(`child process exited with code ${code}`)
-      })
+      // pwd.on('close', (code: any) => {
+      //   console.log(`child process exited with code ${code}`)
+      // })
 
-      const ls = spawn('ls -la /usr/bin/nr1', [], {cwd: submodulePath})
-      ls.stdout.on('data', (data: any) => {
-        console.log(`ls stdout: ${data}`)
-      })
+      // const ls = spawn('ls -la /usr/bin/nr1', [], {cwd: submodulePath})
+      // ls.stdout.on('data', (data: any) => {
+      //   console.log(`ls stdout: ${data}`)
+      // })
 
-      ls.stderr.on('data', (data: any) => {
-        console.log(`ls stderr: ${data}`)
-      })
+      // ls.stderr.on('data', (data: any) => {
+      //   console.log(`ls stderr: ${data}`)
+      // })
 
-      ls.on('close', (code: any) => {
-        console.log(`ls child process exited with code ${code}`)
-      })
+      // ls.on('close', (code: any) => {
+      //   console.log(`ls child process exited with code ${code}`)
+      // })
 
       // exec(
       //   'pwd',
