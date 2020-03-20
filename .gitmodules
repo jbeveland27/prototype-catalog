@@ -1,3 +1,6 @@
 [submodule "prototype-nr1-actions"]
 	path = prototype-nr1-actions
 	url = git@github.com:jbeveland27/prototype-nr1-actions.git
+[submodule "prototype-nr1-actions-2"]
+	path = prototype-nr1-actions-2
+	url = git@github.com:jbeveland27/prototype-nr1-actions-2.git
