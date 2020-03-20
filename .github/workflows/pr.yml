@@ -514,7 +514,11 @@ jobs:
   # Just for test
   map-global-uuid:
     name: map-global-uuid
-    needs: checkout-and-build
+    env:
+      SUBMODULE_NAME: prototype-nr1-actions
+      NR1_API_KEY: ${{ secrets.DEMOTRON_V2_API_KEY_PROD }}
+      NR1_REGION: us
+#    needs: checkout-and-build
     runs-on: ubuntu-latest
     steps:
 
@@ -535,27 +539,29 @@ jobs:
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --depth=1 --recursive --jobs 8
           
-      - name: Download submodule_name artifact
-        uses: actions/download-artifact@v1
-        with:
-          name: submodule_name
+#      - name: Download submodule_name artifact
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: submodule_name
       
-      - name: Set SUBMODULE_NAME env var
-        run: |
-          SUB_NAME=$(cat submodule_name/submodule_name.txt)
-
-          if [ -z "$SUB_NAME" ]; then
-            echo "Error: Could not determine submodule name from artifact"
-            exit 1
-          else
-            echo ::set-env name=SUBMODULE_NAME::$SUB_NAME
-            echo SUBMODULE_NAME: $SUB_NAME
-          fi
+#      - name: Set SUBMODULE_NAME env var
+#        run: |
+#          SUB_NAME=$(cat submodule_name/submodule_name.txt)
+#
+#          if [ -z "$SUB_NAME" ]; then
+#            echo "Error: Could not determine submodule name from artifact"
+#            exit 1
+#          else
+#            echo ::set-env name=SUBMODULE_NAME::$SUB_NAME
+#            echo SUBMODULE_NAME: $SUB_NAME
+#          fi
 
       # TODO: Convert these steps to docker-based action
       - name: Install NR1 CLI
         if: env.SUBMODULE_NAME != ''
-        run: curl -s https://cli.nr-ext.net/installer.sh | sudo bash
+        run: |
+          curl -s https://cli.nr-ext.net/installer.sh | sudo bash
+          nr1 profiles:add --name workflow_staging --api-key "$NR1_API_KEY" --region "$NR1_REGION"
 
       - name: Setup node
         if: env.SUBMODULE_NAME != ''
@@ -563,7 +569,6 @@ jobs:
         with:
           node-version: "10.x"
 
-      # Custom action to check for OSS files
       - name: compile map-global-uuid
         if: env.SUBMODULE_NAME != ''
         run: |
