@@ -39,7 +39,7 @@ async function run() {
       //   cd submoduleName
       //   nr1 nerdpack:uuid -gf
       core.debug(`Generating new uuid for submodule: ${submoduleName}`)
-      await exec.exec('/usr/local/bin/nr1 nerdpack:uuid -gf', [], {cwd: submodulePath})
+      await exec.exec('"/usr/bin/nr1"', ['nerdpack:uuid', 'gf'], {cwd: submodulePath})
 
       // Get generated uuid from nr1.json
       const nr1JsonPath: string = path.join(submoduleName, 'nr1.json')
