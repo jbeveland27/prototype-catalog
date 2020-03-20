@@ -562,6 +562,7 @@ jobs:
         run: |
           curl -s https://cli.nr-ext.net/installer.sh | sudo bash
           nr1 profiles:add --name workflow_staging --api-key "$NR1_API_KEY" --region "$NR1_REGION"
+          which nr1
 
       - name: Setup node
         if: env.SUBMODULE_NAME != ''
