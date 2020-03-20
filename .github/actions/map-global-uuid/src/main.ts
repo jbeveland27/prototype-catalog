@@ -47,7 +47,24 @@ async function run() {
       // await exec.exec(`"${nr1}"`, ['nerdpack:info'], {cwd: submodulePath})
 
       const {exec, execFile} = require('child_process')
-      execFile('cd', [`${submodulePath}`], (err: any, stdout: any, stderr: any) => {
+
+      exec('ls -la /usr/bin/nr1', (err: any, stdout: any, stderr: any) => {
+        if (err) {
+          console.error(`1st exec error: ${err}`)
+        }
+        console.log(`stdout: ${stdout}`)
+        console.log(`stderr: ${stderr}`)
+      })
+
+      exec(`ls -la ${submodulePath}`, (err: any, stdout: any, stderr: any) => {
+        if (err) {
+          console.error(`1st exec error: ${err}`)
+        }
+        console.log(`stdout: ${stdout}`)
+        console.log(`stderr: ${stderr}`)
+      })
+
+      execFile('cd', [`'${submodulePath}'`], (err: any, stdout: any, stderr: any) => {
         if (err) {
           //some err occurred
           console.error(`exec error: ${err}`)
