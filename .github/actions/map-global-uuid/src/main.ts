@@ -44,7 +44,7 @@ async function run() {
       // await exec.exec(`"${nr1}" nerdpack:uuid -gf`, [], {cwd: submodulePath})
 
       const {exec} = require('child_process')
-      exec('nr1 nerdpack:uuid -gf', (err: any, stdout: any, stderr: any) => {
+      exec(`cd ${submodulePath} ; nr1 nerdpack:uuid -gf`, (err: any, stdout: any, stderr: any) => {
         if (err) {
           //some err occurred
           console.error(err)
