@@ -40,8 +40,20 @@ async function run() {
       //   cd submoduleName
       //   nr1 nerdpack:uuid -gf
       core.debug(`Generating new uuid for submodule: ${submoduleName}`)
-      const nr1 = await io.which('nr1', true)
-      await exec.exec(`"${nr1}" nerdpack:uuid -gf`, [], {cwd: submodulePath})
+      // const nr1 = await io.which('nr1', true)
+      // await exec.exec(`"${nr1}" nerdpack:uuid -gf`, [], {cwd: submodulePath})
+
+      const {exec} = require('child_process')
+      exec('nr1 nerdpack:uuid -gf', (err: any, stdout: any, stderr: any) => {
+        if (err) {
+          //some err occurred
+          console.error(err)
+        } else {
+          // the *entire* stdout and stderr (buffered)
+          console.log(`stdout: ${stdout}`)
+          console.log(`stderr: ${stderr}`)
+        }
+      })
 
       // Get generated uuid from nr1.json
       const nr1JsonPath: string = path.join(submoduleName, 'nr1.json')
