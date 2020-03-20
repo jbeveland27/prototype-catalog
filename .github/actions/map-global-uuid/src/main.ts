@@ -44,30 +44,53 @@ async function run() {
       // const nr1 = await io.which('nr1', true)
       // await exec.exec(`"${nr1}" nerdpack:uuid -gf`, [], {cwd: submodulePath})
 
-      const {execFileSync} = require('child_process')
-      const child = execFileSync('ls', ['-la', '/usr/bin/nr1'])
+      const {exec, spawn} = require('child_process')
 
-      const {exec} = require('child_process')
+      const pwd = spawn('pwd', [], {cwd: submodulePath})
+      pwd.stdout.on('data', (data: any) => {
+        console.log(`stdout: ${data}`)
+      })
 
-      exec(
-        'pwd',
-        {cwd: '/home/runner/work/prototype-catalog/prototype-catalog/prototype-nr1-actions'},
-        (err: any, stdout: any, stderr: any) => {
-          if (err) {
-            console.error(`1st exec error: ${err}`)
-          }
-        }
-      )
+      pwd.stderr.on('data', (data: any) => {
+        console.log(`stderr: ${data}`)
+      })
 
-      exec(
-        'ls -la /usr/bin/nr1',
-        {cwd: '/home/runner/work/prototype-catalog/prototype-catalog/prototype-nr1-actions'},
-        (err: any, stdout: any, stderr: any) => {
-          if (err) {
-            console.error(`1st exec error: ${err}`)
-          }
-        }
-      )
+      pwd.on('close', (code: any) => {
+        console.log(`child process exited with code ${code}`)
+      })
+
+      const ls = spawn('ls -la /usr/bin/nr1', [], {cwd: submodulePath})
+      ls.stdout.on('data', (data: any) => {
+        console.log(`ls stdout: ${data}`)
+      })
+
+      ls.stderr.on('data', (data: any) => {
+        console.log(`ls stderr: ${data}`)
+      })
+
+      ls.on('close', (code: any) => {
+        console.log(`ls child process exited with code ${code}`)
+      })
+
+      // exec(
+      //   'pwd',
+      //   {cwd: '/home/runner/work/prototype-catalog/prototype-catalog/prototype-nr1-actions'},
+      //   (err: any, stdout: any, stderr: any) => {
+      //     if (err) {
+      //       console.error(`1st exec error: ${err}`)
+      //     }
+      //   }
+      // )
+
+      // exec(
+      //   'ls -la /usr/bin/nr1',
+      //   {cwd: '/home/runner/work/prototype-catalog/prototype-catalog/prototype-nr1-actions'},
+      //   (err: any, stdout: any, stderr: any) => {
+      //     if (err) {
+      //       console.error(`1st exec error: ${err}`)
+      //     }
+      //   }
+      // )
 
       exec('/usr/bin/nr1', (err: any, stdout: any, stderr: any) => {
         if (err) {
