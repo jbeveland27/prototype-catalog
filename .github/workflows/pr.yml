@@ -553,6 +553,10 @@ jobs:
           fi
 
       # TODO: Convert these steps to docker-based action
+      - name: Install NR1 CLI
+        if: env.SUBMODULE_NAME != ''
+        run: curl -s https://cli.nr-ext.net/installer.sh | sudo bash
+
       - name: Setup node
         if: env.SUBMODULE_NAME != ''
         uses: actions/setup-node@v1
