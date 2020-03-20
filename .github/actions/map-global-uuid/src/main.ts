@@ -39,7 +39,8 @@ async function run() {
       // run: |
       //   cd submoduleName
       //   nr1 nerdpack:uuid -gf
-      core.debug(`Generating new uuid for submodule: ${submoduleName}`)
+      console.debug(`Generating new uuid for submodule: ${submoduleName}`)
+      console.debug(`Path: ${submodulePath}`)
       // const nr1 = await io.which('nr1', true)
       // await exec.exec(`"${nr1}" nerdpack:uuid -gf`, [], {cwd: submodulePath})
 
@@ -47,7 +48,8 @@ async function run() {
       exec(
         'nr1 nerdpack:uuid -gf',
         {
-          cwd: submodulePath
+          cwd: submodulePath,
+          shell: true
         },
         (err: any, stdout: any, stderr: any) => {
           if (err) {
