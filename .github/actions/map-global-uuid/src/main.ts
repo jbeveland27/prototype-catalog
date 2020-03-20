@@ -1,6 +1,5 @@
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
-import * as io from '@actions/io'
 import * as path from 'path'
 import fs from 'fs'
 
@@ -44,67 +43,84 @@ async function run() {
       // const nr1 = await io.which('nr1', true)
       // const options: {[key: string]: string} = {}
       // options.cwd = submodulePath
-      // await exec.exec(`"${nr1}"`, ['nerdpack:info'], {cwd: submodulePath})
+      await exec.exec(`nr1 nerdpack:uuid -gf`, [], {cwd: submodulePath})
 
-      const {exec, execFile} = require('child_process')
+      // Get generated uuid from nr1.json
+      const nr1JsonPath: string = path.join(submodulePath, 'nr1.json')
+      const nr1Json = require(nr1JsonPath)
+      console.debug('nr1Json after generation: ', nr1Json)
+      console.debug('globalsJson: ', globalsJson)
 
-      exec('ls -la /usr/bin/nr1', (err: any, stdout: any, stderr: any) => {
-        if (err) {
-          console.error(`1st exec error: ${err}`)
-        }
-        console.log(`stdout: ${stdout}`)
-        console.log(`stderr: ${stderr}`)
+      // Copy uuid out of nr1.json into globals.json
+      const uuid = nr1Json.hasOwnProperty('id') ? nr1Json.id : ''
+      globalsJson.submoduleName = uuid
+      fs.writeFile(globalsJsonPath, JSON.stringify(globalsJson, null, 2), function writeJSON(err) {
+        if (err) return console.log(err)
+        console.debug('globals after writing uuid: ', JSON.stringify(globalsJson, null, 2))
+        console.debug(`Writing to: ${globalsJsonPath}`)
       })
 
-      exec(`ls -la ${submodulePath}`, (err: any, stdout: any, stderr: any) => {
-        if (err) {
-          console.error(`1st exec error: ${err}`)
-        }
-        console.log(`stdout: ${stdout}`)
-        console.log(`stderr: ${stderr}`)
-      })
+      // TODO: Commit globals.json (in PR?)
 
-      execFile('cd', [`'${submodulePath}'`], (err: any, stdout: any, stderr: any) => {
-        if (err) {
-          //some err occurred
-          console.error(`exec error: ${err}`)
-          core.setFailed(`map-global-uuid failed: ${err.message}`)
-        } else {
-          execFile('/usr/bin/nr1', ['nerdpack:info'], (err: any, stdout: any, stderr: any) => {
-            if (err) {
-              //some err occurred
-              console.error(`exec error: ${err}`)
-              core.setFailed(`map-global-uuid failed: ${err.message}`)
-            } else {
-              // the *entire* stdout and stderr (buffered)
-              console.log(`stdout: ${stdout}`)
-              console.log(`stderr: ${stderr}`)
+      // const {exec, execFile} = require('child_process')
+      // exec('ls -la /usr/bin/nr1', (err: any, stdout: any, stderr: any) => {
+      //   if (err) {
+      //     console.error(`1st exec error: ${err}`)
+      //   }
+      //   console.log(`stdout: ${stdout}`)
+      //   console.log(`stderr: ${stderr}`)
+      // })
 
-              // Get generated uuid from nr1.json
-              const nr1JsonPath: string = path.join(submodulePath, 'nr1.json')
-              const nr1Json = require(nr1JsonPath)
-              console.debug('nr1Json after generation: ', nr1Json)
-              console.debug('globalsJson: ', globalsJson)
+      // exec(`ls -la ${submodulePath}`, (err: any, stdout: any, stderr: any) => {
+      //   if (err) {
+      //     console.error(`1st exec error: ${err}`)
+      //   }
+      //   console.log(`stdout: ${stdout}`)
+      //   console.log(`stderr: ${stderr}`)
+      // })
 
-              // Copy uuid out of nr1.json into globals.json
-              const uuid = nr1Json.hasOwnProperty('id') ? nr1Json.id : ''
-              globalsJson.submoduleName = uuid
-              fs.writeFile(
-                globalsJsonPath,
-                JSON.stringify(globalsJson, null, 2),
-                function writeJSON(err) {
-                  if (err) return console.log(err)
-                  console.debug(
-                    'globals after writing uuid: ',
-                    JSON.stringify(globalsJson, null, 2)
-                  )
-                  console.debug(`Writing to: ${globalsJsonPath}`)
-                }
-              )
-            }
-          })
-        }
-      })
+      // execFile('cd', [`'${submodulePath}'`], (err: any, stdout: any, stderr: any) => {
+      //   if (err) {
+      //     //some err occurred
+      //     console.error(`exec error: ${err}`)
+      //     core.setFailed(`map-global-uuid failed: ${err.message}`)
+      //   } else {
+      //     execFile('/usr/bin/nr1', ['nerdpack:info'], (err: any, stdout: any, stderr: any) => {
+      //       if (err) {
+      //         //some err occurred
+      //         console.error(`exec error: ${err}`)
+      //         core.setFailed(`map-global-uuid failed: ${err.message}`)
+      //       } else {
+      //         // the *entire* stdout and stderr (buffered)
+      //         console.log(`stdout: ${stdout}`)
+      //         console.log(`stderr: ${stderr}`)
+
+      //         // Get generated uuid from nr1.json
+      //         const nr1JsonPath: string = path.join(submodulePath, 'nr1.json')
+      //         const nr1Json = require(nr1JsonPath)
+      //         console.debug('nr1Json after generation: ', nr1Json)
+      //         console.debug('globalsJson: ', globalsJson)
+
+      //         // Copy uuid out of nr1.json into globals.json
+      //         const uuid = nr1Json.hasOwnProperty('id') ? nr1Json.id : ''
+      //         globalsJson.submoduleName = uuid
+      //         fs.writeFile(
+      //           globalsJsonPath,
+      //           JSON.stringify(globalsJson, null, 2),
+      //           function writeJSON(err) {
+      //             if (err) return console.log(err)
+      //             console.debug(
+      //               'globals after writing uuid: ',
+      //               JSON.stringify(globalsJson, null, 2)
+      //             )
+      //             console.debug(`Writing to: ${globalsJsonPath}`)
+      //           }
+      //         )
+      //       }
+      //     })
+      //   }
+      // })
+
       // const {exec, spawn} = require('child_process')
 
       // const pwd = spawn('pwd', [], {cwd: submodulePath})
@@ -181,7 +197,6 @@ async function run() {
       //     })
       //   }
       // })
-      // TODO: Commit globals.json (in PR?)
     }
   } catch (error) {
     core.setFailed(error.message)
