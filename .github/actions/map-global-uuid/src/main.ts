@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
+import * as io from '@actions/io'
 import * as path from 'path'
 import fs from 'fs'
 
@@ -39,7 +40,8 @@ async function run() {
       //   cd submoduleName
       //   nr1 nerdpack:uuid -gf
       core.debug(`Generating new uuid for submodule: ${submoduleName}`)
-      await exec.exec('nr1', ['nerdpack:uuid', 'gf'], {cwd: submodulePath})
+      const nr1 = await io.which('nr1', true)
+      await exec.exec('"${nr1}" nerdpack:uuid -gf', [], {cwd: submodulePath})
 
       // Get generated uuid from nr1.json
       const nr1JsonPath: string = path.join(submoduleName, 'nr1.json')
