@@ -52,24 +52,25 @@ async function run() {
           // the *entire* stdout and stderr (buffered)
           console.log(`stdout: ${stdout}`)
           console.log(`stderr: ${stderr}`)
+
+          // Get generated uuid from nr1.json
+          const nr1JsonPath: string = path.join(submodulePath, 'nr1.json')
+          const nr1Json = require(nr1JsonPath)
+          console.debug('nr1Json after generation: ', nr1Json)
+          console.debug('globalsJson: ', globalsJson)
+
+          // Copy uuid out of nr1.json into globals.json
+          const uuid = nr1Json.hasOwnProperty('id') ? nr1Json.id : ''
+          globalsJson.submoduleName = uuid
+          fs.writeFile(globalsJsonPath, JSON.stringify(globalsJson, null, 2), function writeJSON(
+            err
+          ) {
+            if (err) return console.log(err)
+            console.debug('globals after writing uuid: ', JSON.stringify(globalsJson, null, 2))
+            console.debug(`Writing to: ${globalsJsonPath}`)
+          })
         }
       })
-
-      // Get generated uuid from nr1.json
-      const nr1JsonPath: string = path.join(submoduleName, 'nr1.json')
-      const nr1Json = require(nr1JsonPath)
-      console.debug('nr1Json after generation: ', nr1Json)
-      console.debug('globalsJson: ', globalsJson)
-
-      // Copy uuid out of nr1.json into globals.json
-      const uuid = nr1Json.hasOwnProperty('id') ? nr1Json.id : ''
-      globalsJson.submoduleName = uuid
-      fs.writeFile(globalsJsonPath, JSON.stringify(globalsJson, null, 2), function writeJSON(err) {
-        if (err) return console.log(err)
-        console.debug('globals after writing uuid: ', JSON.stringify(globalsJson, null, 2))
-        console.debug(`Writing to: ${globalsJsonPath}`)
-      })
-
       // TODO: Commit globals.json (in PR?)
     }
   } catch (error) {
