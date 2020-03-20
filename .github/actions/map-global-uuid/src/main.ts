@@ -49,17 +49,21 @@ async function run() {
 
       const {exec} = require('child_process')
 
-      exec('pwd', {cwd: submodulePath}, (err: any, stdout: any, stderr: any) => {
+      exec('pwd', {cwd: `'${submodulePath}'`}, (err: any, stdout: any, stderr: any) => {
         if (err) {
           console.error(`1st exec error: ${err}`)
         }
       })
 
-      exec('ls -la /usr/bin/nr1', {cwd: submodulePath}, (err: any, stdout: any, stderr: any) => {
-        if (err) {
-          console.error(`1st exec error: ${err}`)
+      exec(
+        'ls -la /usr/bin/nr1',
+        {cwd: `'${submodulePath}'`},
+        (err: any, stdout: any, stderr: any) => {
+          if (err) {
+            console.error(`1st exec error: ${err}`)
+          }
         }
-      })
+      )
 
       exec('/usr/bin/nr1', (err: any, stdout: any, stderr: any) => {
         if (err) {
