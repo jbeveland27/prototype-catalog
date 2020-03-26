@@ -720,7 +720,9 @@ jobs:
       # Install NR1 CLI - The map-global-uuid action needs the nr1 cli executable
       - name: Install NR1 CLI
         if: env.SUBMODULE_NAME != ''
-        run: curl -s https://cli.nr-ext.net/installer.sh | sudo bash
+        run: |
+          curl -s https://cli.nr-ext.net/installer.sh | sudo bash
+          nr1 profiles:add --name workflow_staging --api-key ${{ secrets.DEMOTRON_V2_API_KEY_PROD }} --region us
 
       # Add cli-plugin-catalog - checks out release tag with node_modules included
       # so this repo has everything needed to link as a plugin for the nr1 cli
