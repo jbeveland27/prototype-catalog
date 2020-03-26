@@ -823,6 +823,7 @@ jobs:
           # check current profile
           nr1 profiles:default --name=workflow_us
           nr1 profiles:list
+          nr1-catalog catalog:info
 
 # Don't execute these commands until we're ready to validate they work          
 #          # Publish to Prod Artifact Registry
