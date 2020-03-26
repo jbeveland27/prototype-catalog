@@ -45,7 +45,7 @@ jobs:
         
   checkout-and-build-master:
     runs-on: ubuntu-latest
-    if: github.event_name != "pull_request" # github.event_name == "push" ?
+    if: github.event_name != 'pull_request' # github.event_name == "push" ?
     env:
       SUBMODULE_NAME: prototype-nr1-actions
 
@@ -120,7 +120,7 @@ jobs:
 
   checkout-and-build-pr:
     runs-on: ubuntu-latest
-    if: github.event_name == "pull_request" # github.event_name == "push"
+    if: github.event_name == 'pull_request' # github.event_name == "push"
     steps:
       # Checkout PR branch and all history (not just last commit), so we can perform `git diff` below
       - name: Checkout repo
