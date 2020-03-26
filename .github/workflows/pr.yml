@@ -742,14 +742,14 @@ jobs:
 
       # If there's output from the previous Action, commit the globals.json back to master
       - name: Check and Commit globals.json
-        if: steps.uuid.outputs.globals-updated == "true"
+        if: steps.uuid.outputs.globals-updated == 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           echo "globals.json was changed -- not committing right now but will soon"
           # git commit globals.json "Add new UUID for submodule: ${{ env.SUBMODULE_NAME }}"
       # - name: Push Commit
-      #   if: steps.uuid.outputs.globals-updated == "true"
+      #   if: steps.uuid.outputs.globals-updated == 'true'
       #   uses: ad-m/github-push-action@v0.5.0
       #   with:
       #     github_token: ${{ secrets.GITHUB_TOKEN }}
