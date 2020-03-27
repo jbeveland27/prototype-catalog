@@ -386,7 +386,8 @@ jobs:
   #   else
   #     copy value from globals.json into nr1.json
   #
-  # TODO: Check that this only happens on release
+  # TODO: Check that this only happens on release?
+  # TODO: npm install might be needed after cloning the repo
   validate-catalog-uuid-and-publish:
     name: validate-catalog-uuid-and-publish
     # just for testing
