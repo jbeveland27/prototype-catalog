@@ -2,3 +2,6 @@
 [submodule "apps/nr1-top"]
 	path = apps/nr1-top
 	url = https://github.com/newrelic/nr1-top.git
+[submodule "apps/nr1-browser-analyzer"]
+	path = apps/nr1-browser-analyzer
+	url = https://github.com/newrelic/nr1-browser-analyzer.git
