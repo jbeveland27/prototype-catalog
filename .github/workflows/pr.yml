@@ -50,9 +50,8 @@ jobs:
   checkout-and-build-master:
     runs-on: ubuntu-latest
     if: github.event_name != 'pull_request' # github.event_name == "push" ?
-    env:
-      SUBMODULE_NAME: prototype-nr1-actions
-
+    # env:
+    #   SUBMODULE_NAME: prototype-nr1-actions
     steps:
       # Checkout PR branch and all history (not just last commit), so we can perform `git diff` below
       - name: Checkout repo
@@ -391,9 +390,9 @@ jobs:
   validate-catalog-uuid-and-publish:
     name: validate-catalog-uuid-and-publish
     # just for testing
-    # needs: checkout-and-build-master
-    env:
-      SUBMODULE_NAME: prototype-nr1-actions
+    needs: checkout-and-build-master
+    # env:
+    #   SUBMODULE_NAME: prototype-nr1-actions
     if: github.event_name != 'pull_request'  
     runs-on: ubuntu-latest
     steps:
@@ -413,23 +412,22 @@ jobs:
           git submodule sync --recursive
           git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --depth=1 --recursive --jobs 8
 
-      # Commented just for testing    
-      # - name: Download submodule_name artifact
-      #   uses: actions/download-artifact@v1
-      #   with:
-      #     name: submodule_name
+      - name: Download submodule_name artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: submodule_name
       
-      # - name: Set SUBMODULE_NAME env var
-      #   run: |
-      #     SUB_NAME=$(cat submodule_name/submodule_name.txt)
+      - name: Set SUBMODULE_NAME env var
+        run: |
+          SUB_NAME=$(cat submodule_name/submodule_name.txt)
 
-      #     if [ -z "$SUB_NAME" ]; then
-      #       echo "Error: Could not determine submodule name from artifact"
-      #       exit 1
-      #     else
-      #       echo ::set-env name=SUBMODULE_NAME::$SUB_NAME
-      #       echo SUBMODULE_NAME: $SUB_NAME
-      #     fi
+          if [ -z "$SUB_NAME" ]; then
+            echo "Error: Could not determine submodule name from artifact"
+            exit 1
+          else
+            echo ::set-env name=SUBMODULE_NAME::$SUB_NAME
+            echo SUBMODULE_NAME: $SUB_NAME
+          fi
       
       # Install NR1 CLI - The map-global-uuid action needs the nr1 cli executable
       - name: Install NR1 CLI
