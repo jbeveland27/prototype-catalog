@@ -5,12 +5,16 @@ on:
     branches:
       - master
       - v*
+    paths:
+      - 'apps/**'
     tags:
       - v*
 
   pull_request:
     branches:
       - master
+    paths:
+      - 'apps/**'
 
 jobs:
   log-context:
