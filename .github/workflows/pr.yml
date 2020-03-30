@@ -530,6 +530,7 @@ jobs:
           # NR1_REGION_STAGING: staging
         run: |
           cd ${{ env.SUBMODULE_NAME }}
+          npm install
           # SKIPPING PROFILES FOR NOW
           # nr1 profiles:add --name workflow_staging --api-key "$NR1_API_KEY_STAGING" --region "$NR1_REGION_US"
           # nr1 profiles:add --name workflow_eu --api-key "$NR1_API_KEY_EU" --region "$NR1_REGION_US"
