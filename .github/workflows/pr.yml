@@ -392,8 +392,9 @@ jobs:
     name: validate-catalog-uuid-and-publish
     # just for testing
     needs: checkout-and-build-master
-    # env:
-    #   SUBMODULE_NAME: prototype-nr1-actions
+    env:
+      # SUBMODULE_NAME: prototype-nr1-actions
+      MESSAGE: ${{ github.event.head_commit.message }}
     if: github.event_name != 'pull_request'  
     runs-on: ubuntu-latest
     steps:
@@ -542,7 +543,7 @@ jobs:
           # Don't execute these commands until we're ready to validate they work
           
           # Publish to Prod Artifact Registry
-          MESSAGE=${{ github.event.head_commit.message }}
+          # MESSAGE=${{ github.event.head_commit.message }}
           echo Message: $MESSAGE
           if [[ $MESSAGE != *"[skip publish]"* ]]; then
             echo "publishing nerdpack..."
