@@ -547,8 +547,8 @@ jobs:
           echo Message: $MESSAGE
           if [[ $MESSAGE != *"[skip publish]"* ]]; then
             echo "publishing nerdpack..."
-            #nr1 nerdpack:build
-            #nr1 nerdpack:publish --profile=workflow_us --skip-build --verbose
+            nr1 nerdpack:build
+            nr1 nerdpack:publish --profile=workflow_us --skip-build --verbose
           else
             echo "skipping publish"
           fi
