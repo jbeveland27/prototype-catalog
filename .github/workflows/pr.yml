@@ -540,16 +540,16 @@ jobs:
           nr1 catalog:info
 
 # Don't execute these commands until we're ready to validate they work          
-#          # Publish to Prod Artifact Registry
-           message=${{ github.event.head_commit.message }}
-           echo Message: $message
-           if [[ $message != *"[skip publish]"* ]]; then
-             echo "publishing nerdpack..."
-             #nr1 nerdpack:build
-             #nr1 nerdpack:publish --profile=workflow_us --skip-build --verbose
-           else
-             echo "skipping publish"
-           fi
+#         Publish to Prod Artifact Registry
+          message=${{ github.event.head_commit.message }}
+          echo Message: $message
+          if [[ $message != *"[skip publish]"* ]]; then
+            echo "publishing nerdpack..."
+            #nr1 nerdpack:build
+            #nr1 nerdpack:publish --profile=workflow_us --skip-build --verbose
+          else
+            echo "skipping publish"
+          fi
 #
 #          # submit catalog for US
 #          nr1 catalog:submit
