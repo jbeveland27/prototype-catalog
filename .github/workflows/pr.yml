@@ -435,7 +435,7 @@ jobs:
         if: env.SUBMODULE_NAME != ''
         run: |
           curl -s https://cli.nr-ext.net/installer.sh | sudo bash
-          nr1 profiles:add --name workflow_us --api-key ${{ secrets.DEMOTRON_V2_API_KEY_PROD }} --region us
+          nr1 profiles:add --name workflow_us --api-key ${{ secrets.TANGOLLAMA_US_PROD }} --region us
 
       # Add cli-plugin-catalog - checks out release tag with node_modules included
       # so this repo has everything needed to link as a plugin for the nr1 cli
@@ -484,13 +484,13 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          echo "globals.json was changed -- not committing right now but will soon"
-          # git commit globals.json "Add new UUID for submodule: ${{ env.SUBMODULE_NAME }}"
-      # - name: Push Commit
-      #   if: steps.uuid.outputs.globals-updated == 'true'
-      #   uses: ad-m/github-push-action@v0.5.0
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+          echo "globals.json was changed -- committing"
+          git commit globals.json "Add new UUID for submodule: ${{ env.SUBMODULE_NAME }}"
+      - name: Push Commit
+        if: steps.uuid.outputs.globals-updated == 'true'
+        uses: ad-m/github-push-action@v0.5.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
 ########################
 #      # Install NR1 CLI and add catalog plugin
@@ -521,7 +521,7 @@ jobs:
       - name: Publish Nerdpack
         if: env.SUBMODULE_NAME != ''
         env:
-          NR1_API_KEY_US: ${{ secrets.DEMOTRON_V2_API_KEY_PROD }}
+          NR1_API_KEY_US: ${{ secrets.TANGOLLAMA_US_PROD }}
           # NR1_API_KEY_EU: ${{ secrets.DEMOTRON_V2_API_KEY_EU }}
           # NR1_API_KEY_STAGING: ${{ secrets.DEMOTRON_V2_API_KEY_STAGING }}
           NR1_REGION_US: us
@@ -529,6 +529,7 @@ jobs:
           # NR1_REGION_STAGING: staging
         run: |
           cd ${{ env.SUBMODULE_NAME }}
+          # SKIPPING PROFILES FOR NOW
           # nr1 profiles:add --name workflow_staging --api-key "$NR1_API_KEY_STAGING" --region "$NR1_REGION_US"
           # nr1 profiles:add --name workflow_eu --api-key "$NR1_API_KEY_EU" --region "$NR1_REGION_US"
           # nr1 profiles:add --name workflow_us --api-key "$NR1_API_KEY_US" --region "$NR1_REGION_US"
@@ -540,7 +541,15 @@ jobs:
 
 # Don't execute these commands until we're ready to validate they work          
 #          # Publish to Prod Artifact Registry
-#          nr1 nerdpack:publish --profile=workflow_us
+           message=${{ github.event.head_commit.message }}
+           echo Message: $message
+           if [[ $message != *"[skip publish]"* ]]; then
+             echo "publishing nerdpack..."
+             #nr1 nerdpack:build
+             #nr1 nerdpack:publish --profile=workflow_us --skip-build --verbose
+           else
+             echo "skipping publish"
+           fi
 #
 #          # submit catalog for US
 #          nr1 catalog:submit
