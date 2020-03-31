@@ -554,6 +554,7 @@ jobs:
           fi
 
           # submit catalog for US
+          echo "Submitting catalog..."
           nr1 catalog:submit
 #
 #          # submit catalog for EU
