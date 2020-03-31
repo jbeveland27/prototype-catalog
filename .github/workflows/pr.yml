@@ -482,19 +482,10 @@ jobs:
       - name: Check and Commit globals.json
         if: steps.uuid.outputs.globals-updated == 'true'
         run: |
-          echo "Current directory:"
-          pwd
-          ls -la
-
-          if [ -f "globals.json" ]; then
             git config --local user.email "action@github.com"
             git config --local user.name "GitHub Action"
             echo "globals.json was changed -- committing"
-            git commit ./globals.json "Add new UUID for submodule: ${{ env.SUBMODULE_NAME }}"
-          else
-            echo "Cannot find globals.json"
-            exit 1
-          fi
+            git commit globals.json -m "Add new UUID for submodule: ${{ env.SUBMODULE_NAME }}"
 
       - name: Push Commit
         if: steps.uuid.outputs.globals-updated == 'true'
