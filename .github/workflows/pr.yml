@@ -493,30 +493,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-########################
-#      # Install NR1 CLI and add catalog plugin
-#      - name: Install NR1 CLI
-#        if: env.SUBMODULE_NAME != ''
-#        run: curl -s https://cli.nr-ext.net/installer.sh | sudo bash
-#      
-#      # Add cli-plugin-catalog - checks out release tag with node_modules included
-#      # so this repo has everything needed to link as a plugin for the nr1 cli
-#      - name: Checkout repo
-#        if: env.SUBMODULE_NAME != ''
-#        uses: actions/checkout@v2
-#        with:
-#          repository: newrelic/cli-plugin-catalog
-#          ref: v1.2.0
-#          token: ${{ secrets.CLI_PLUGIN_CATALOG_TOKEN }}
-#          path: cli-plugin-catalog # is this needed?
-#      
-#      - name: Install cli-plugin-catalog
-#        run: |
-#          cd cli-plugin-catalog
-#          nr1 plugins:link
-#          nr1 help # verify catalog is listed under commands
-########################
-
+      
       # Validate Ability to publish code (Issue #2)
       # Requires API Key stored as secret
       - name: Publish Nerdpack
