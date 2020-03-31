@@ -387,7 +387,6 @@ jobs:
   #     copy value from globals.json into nr1.json
   #
   # TODO: Check that this only happens on release?
-  # TODO: npm install might be needed after cloning the repo
   validate-catalog-uuid-and-publish:
     name: validate-catalog-uuid-and-publish
     # just for testing
@@ -554,8 +553,8 @@ jobs:
             echo "skipping publish"
           fi
 #
-#          # submit catalog for US
-#          nr1 catalog:submit
+#         # submit catalog for US
+          nr1 catalog:submit
 #
 #          # submit catalog for EU
 #          nr1 profiles:default --name=workflow_eu
