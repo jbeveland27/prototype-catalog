@@ -552,8 +552,8 @@ jobs:
           else
             echo "skipping publish"
           fi
-#
-#         # submit catalog for US
+
+          # submit catalog for US
           nr1 catalog:submit
 #
 #          # submit catalog for EU
