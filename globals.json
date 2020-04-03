@@ -8,5 +8,6 @@
   "nr1-event-stream": "c635b3a1-56e1-4ff5-8bea-82e773a93c39",
   "nr1-flex-manager": "fac06fa6-e224-4938-8839-1062c08a486d",
   "nr1-github": "f8787f68-ccfd-418e-94b5-0582d948bc29",
-  "nr1-graphiql-notebook": "db2f43f0-51b0-4c00-8ab0-3a9ee15bc21b"
+  "nr1-graphiql-notebook": "db2f43f0-51b0-4c00-8ab0-3a9ee15bc21b",
+  "nr1-groundskeeper": "c72920af-7c5a-43a5-8478-b6287c7a53a7"
 }
