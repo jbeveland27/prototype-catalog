@@ -6,5 +6,6 @@
   "nr1-datalyzer": "5265a9d9-26bd-45e7-bcb2-f6db4a898967",
   "nr1-deployment-analyzer": "d31ea93b-42d4-4686-9033-7bd45cb280f7",
   "nr1-event-stream": "c635b3a1-56e1-4ff5-8bea-82e773a93c39",
-  "nr1-flex-manager": "fac06fa6-e224-4938-8839-1062c08a486d"
+  "nr1-flex-manager": "fac06fa6-e224-4938-8839-1062c08a486d",
+  "nr1-github": "f8787f68-ccfd-418e-94b5-0582d948bc29"
 }
