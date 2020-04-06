@@ -487,6 +487,7 @@ jobs:
             echo "globals.json was changed -- committing"
             git commit globals.json -m "Add new UUID for submodule: ${{ env.SUBMODULE_NAME }}"
 
+      # Action for updating versions.json file
       - name: Update Version File
         if: env.SUBMODULE_NAME != ''
         id: versions
