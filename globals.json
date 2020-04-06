@@ -11,5 +11,6 @@
   "nr1-graphiql-notebook": "db2f43f0-51b0-4c00-8ab0-3a9ee15bc21b",
   "nr1-groundskeeper": "c72920af-7c5a-43a5-8478-b6287c7a53a7",
   "nr1-neon": "74af0c77-3837-4b43-8103-a00bf776b061",
-  "nr1-network-telemetry": "e2b73e8e-483e-45a2-827c-a708c99a4a33"
+  "nr1-network-telemetry": "e2b73e8e-483e-45a2-827c-a708c99a4a33",
+  "nr1-pageview-map": "756c5f40-b3e7-41c6-8acd-c7ccd2d487f5"
 }
